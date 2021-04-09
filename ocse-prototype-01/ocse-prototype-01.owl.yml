@@ -1,14 +1,18 @@
 ---
 
-# This yml-file represents some core concepts of control systems engineering
+# This yaml-file represents some core concepts of control systems engineering
 
-- iri: "https://w3id.org/yet/undefined/ocse-prototype01#"
+- iri: "https://ackrep.org/draft/ocse-prototype01#"
 
 - multiple_owl_classes:
     - OCSE_Entity:
         SubClassOf: "owl:Thing"
     - Mathematical_Object:
         SubClassOf: "owl:Thing"
+    # ackrep related entities (will probably be moved to a separate ontology in the future)
+    - ACKREP_Entity:
+        SubClassOf: "owl:Thing"
+        annotations: Base class for all ACKREP-entities
 
     - Mathematical_Function:
         SubClassOf: Mathematical_Object
@@ -27,7 +31,7 @@
     - Monovariate_Polynomial:
         SubClassOf:
             - Polynomial
-            - SISO_Mathematical_Function
+            # - SISO_Mathematical_Function # this should be inferred by the reasoner
 
     - Singularity:
         SubClassOf: Mathematical_Object
@@ -42,12 +46,26 @@
     - Linearity:
         SubClassOf: Affinity
 
+    # ackrep related entities (will probably be moved to a separate ontology in the future)
+    - ACKREP_ProblemSpecification:
+        SubClassOf: ACKREP_Entity
+    - ACKREP_ProblemSolution:
+        SubClassOf: ACKREP_Entity
+    - ACKREP_MethodPackage:
+        SubClassOf: ACKREP_Entity
+    - ACKREP_EnvironmentSpecification:
+        SubClassOf: ACKREP_Entity
+    - ACKREP_Documentation:
+        SubClassOf: ACKREP_Entity
+    - ACKREP_Comment:
+        SubClassOf: ACKREP_Entity
+
     - Mathematical_Model:
         SubClassOf: OCSE_Entity
         annotations: a model of a dynamical system
     - Mathematical_Quantity:
         SubClassOf: OCSE_Entity
-        annotations: General Quatity
+        annotations: General Quantity
     - Dynamical_Behavior:
         annotations: A behavior which might be exposed by a dynamical system
         SubClassOf: OCSE_Entity
@@ -57,6 +75,41 @@
         SubClassOf: OCSE_Entity
     - Signal_Type:
         SubClassOf: OCSE_Entity
+    - Task_Type:
+        SubClassOf: OCSE_Entity
+        annotations: Type of control problem or challenge
+    - System_Property:
+        SubClassOf: OCSE_Entity
+        annotations: General Property
+
+    # Task Types
+    - Trajectory_Generation:
+        SubClassOf: Task_Type
+        annotations: also known as Open_Loop_Control, Trajectory_Planning
+    - Closed_Loop_Control:
+        SubClassOf: Task_Type
+    - System_Indentification:
+        SubClassOf: Task_Type
+        annotations: construct a generalizable model of a dynamical system from (measurement/simulation) data
+    - Quantity_Estimation:
+        SubClassOf: Task_Type
+        annotations: usually done by an observer or a Kalman Filter
+    - Property_Analysis:
+        SubClassOf: Task_Type
+        annotations: determine whether a system admits a special property (controlability, flatness...)
+
+    # System Properties
+    - Stabilizeability:
+        SubClassOf: System_Property
+        annotations: The unstable subsystem is controllable
+    - Detectability:
+        SubClassOf: System_Property
+        annotations: The unstable subsystem is observable
+    - Controlability:
+        SubClassOf: Stabilizeability
+    - Observability:
+        SubClassOf: Detectability
+
 
     # Mathematical Models
     - DAE_System:
@@ -73,15 +126,21 @@
     - Transfer_Function:
         SubClassOf: Mathematical_Model
     - Rational_Transfer_Function:
-        # this should probably be a defined class
+        # this should be modeled as a `represented_by` relation
         SubClassOf:
             - Transfer_Function
-            - Rational_Function
+            # - Rational_Function
+    - State_Space_System:
+        SubClassOf: ODE_System
+    - Linear_State_Space_System:
+        # todo: what about inputs and outputs
+        # how to associate this class with linearity?
+        SubClassOf: State_Space_System
 
     # Quantities
     - System_Quantity:
         SubClassOf: Mathematical_Quantity
-        annotations: A system quantity of a dynamical system. Might change over time
+        annotations: A system quantity of a dynamical system. The quantity might change over time.
     - External_Quantity:
         SubClassOf: Mathematical_Quantity
     - External_Disturbance_Quantity:
@@ -92,7 +151,7 @@
     # Signal Types
     - Step_Function:
         SubClassOf:
-            - Signal_Type
+            # - Signal_Type -> represented_by
             - SISO_Mathematical_Function
         annotations: Also named 'Heavyside-Function'.
     - Dirac_Distribution:
@@ -100,10 +159,8 @@
         annotations: Also named 'Delta-Distribution'.
     - Harmonic_Function:
         SubClassOf:
-            - Signal_Type
+            # - Signal_Type -> represented_by
             - SISO_Mathematical_Function
-    #- Cosine:
-        #SubClassOf: Harmonic_Function
     - Noise:
         SubClassOf: Signal_Type
 
@@ -135,6 +192,51 @@
     - Plant:
         SubClassOf: Dynamical_System
 
+
+
+
+
+- owl_object_property:
+    represented_by:
+        Domain:
+            - OCSE_Entity
+
+        Range:
+            - OCSE_Entity
+
+# ACKREP specific properties
+
+- owl_object_property:
+    has_ontological_tag:
+        Domain:
+            - ACKREP_Entity
+        Range:
+            - OCSE_Entity
+
+
+- owl_data_property:
+    has_entity_key:
+        Domain: ACKREP_Entity
+        Range: str
+        Characteristics:
+            - Functional
+
+# Generic individuals (workarround due to the lack of metaclass support in owlready)
+- owl_class:
+      Generic_Individual:
+          SubClassOf: "owl:Thing"
+
+- owl_individual:
+    iTrajectory_Generation:
+      types:
+        - Trajectory_Generation
+        # - Generic_Individual
+
+- owl_individual:
+    iLinear_State_Space_System:
+      types:
+        - Linear_State_Space_System
+        # - Generic_Individual
 
 # usorted list of candidate terms
 #- system
