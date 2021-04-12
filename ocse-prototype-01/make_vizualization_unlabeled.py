@@ -44,7 +44,7 @@ style = nxv.Style(
 # svg_data = nxv.render(G, style)
 svg_data = nxv.render(G, style, format="svg")
 
-svg_fname = "ocse-prototype01.svg"
+svg_fname = "ocse-prototype01-unlabeled.svg"
 
 with open(svg_fname, "wb") as svgfile:
     svgfile.write(svg_data)
