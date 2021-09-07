@@ -3,6 +3,8 @@
 # This yaml-file represents some core concepts of control systems engineering
 # it uses yamlpyowl to interpret yaml as owl.
 
+# Current Version 0.1.0
+
 - iri: "https://ackrep.org/draft/ocse-prototype01#"
 
 - annotation: >
@@ -67,20 +69,30 @@
 
     - Mathematical_Model:
         SubClassOf: OCSE_Entity
-        annotations: a model of a dynamical system
+        annotations: >
+            A mathematical model of an ontotypical dynamical system. Some authors call this a "system" in a behavioral sense. Note: one model can have different representations, e.g. by applying an invertible change of coordinates.
+    - Mathematical_Model_Representation:
+        SubClassOf: OCSE_Entity
+        annotations: >
+            Specific representation of a mathematical model.
     - Mathematical_Quantity:
         SubClassOf: OCSE_Entity
         annotations: General Quantity
     - Dynamical_Behavior:
         annotations: A behavior which might be exposed by a dynamical system
         SubClassOf: OCSE_Entity
-    - Dynamical_System:
+    - Ontotypical_Dynamical_System:
         SubClassOf: OCSE_Entity
-    - Feedback-Law:
+        annotations: >
+            The type (in the sense of template) of a system (real or abstract) of which multiple instances can exist (like spring-mass-damper) system.
+            "Ontotypical" means: Being-related (from greek "onto") type (from greek "typos"). This concept serves to distinguish between the model of a system, the generic (i.e. ontotypical) system (to wich the model refers) and concrete physical or cyberphysical realizations of the system. Note: one ontotypical dynamical system can have different models, e.g. a rigid body ode model and a pde model accounting for elasticity. These models are in general not equivalent, i.e. there is no one-to-one mapping between their trajectories.
+    - Control-Theoretic_Role:
         SubClassOf: OCSE_Entity
-    - Signal_Type:
+        annotations: >
+            The role which a (sub) system plays in a control-theoretic setting. E.g. Controller, Plant, Filter, Observer
+    - Control-Theoretic_Signal:
         SubClassOf: OCSE_Entity
-    - Task_Type:
+    - Control-Theoretic_Task:
         SubClassOf: OCSE_Entity
         annotations: Type of control problem or challenge
     - Dynamic_System_Property:
@@ -89,21 +101,21 @@
 
     # Task Types
     - Trajectory_Generation:
-        SubClassOf: Task_Type
+        SubClassOf: Control-Theoretic_Task
         annotations: also known as Open_Loop_Control, Trajectory_Planning
     - Closed_Loop_Control:
-        SubClassOf: Task_Type
+        SubClassOf: Control-Theoretic_Task
     - System_Identification:
-        SubClassOf: Task_Type
+        SubClassOf: Control-Theoretic_Task
         annotations: construct a generalizable model of a dynamical system from (measurement/simulation) data
     - Quantity_Estimation:
-        SubClassOf: Task_Type
+        SubClassOf: Control-Theoretic_Task
         annotations: usually done by an observer or a Kalman Filter
     - Property_Analysis:
-        SubClassOf: Task_Type
+        SubClassOf: Control-Theoretic_Task
         annotations: determine whether a system admits a special property (controllability, flatness...)
     - System_Modelling:
-        SubClassOf: Task_Type
+        SubClassOf: Control-Theoretic_Task
 
     # System Properties
     - Stabilizability:
@@ -138,18 +150,18 @@
 
     # Mathematical Models
     - DAE_System:
-        SubClassOf: Mathematical_Model
+        SubClassOf: Mathematical_Model_Representation
     - ODE_System:
-        SubClassOf: Mathematical_Model
+        SubClassOf: Mathematical_Model_Representation
     - PDE_System:
-        SubClassOf: Mathematical_Model
+        SubClassOf: Mathematical_Model_Representation
     - ODE_PDE_System:
-        SubClassOf: Mathematical_Model
+        SubClassOf: Mathematical_Model_Representation
     - DC_Hybrid_System:
-        SubClassOf: Mathematical_Model
+        SubClassOf: Mathematical_Model_Representation
         annotations: Hybrid System with discrete-valued and continuous-valued system quantities
     - Transfer_Function:
-        SubClassOf: Mathematical_Model
+        SubClassOf: Mathematical_Model_Representation
     - Rational_Transfer_Function:
         # this should be modeled as a `represented_by` relation
         SubClassOf:
@@ -176,17 +188,17 @@
     # Signal Types
     - Step_Function:
         SubClassOf:
-            # - Signal_Type -> represented_by
+            # - Control-Theoretic_Signal -> represented_by
             - SISO_Mathematical_Function
         annotations: Also named 'Heavyside-Function'.
     - Deterministic_Signal:
-        SubClassOf: Signal_Type
+        SubClassOf: Control-Theoretic_Signal
     - Harmonic_Function:
         SubClassOf:
-            # - Signal_Type -> represented_by
+            # - Control-Theoretic_Signal -> represented_by
             - SISO_Mathematical_Function
     - Noise:
-        SubClassOf: Signal_Type
+        SubClassOf: Control-Theoretic_Signal
 
     # Dynamical_Behaviors
     - Convergence:
@@ -204,7 +216,9 @@
     - Undershooting:
         SubClassOf: Convergence_To_Equilibrium
 
-    # Linear_Feedback_Law types
+    # Controllers
+    - Controller:
+        SubClassOf: Cont
     - Linear_Feedback_Law:
         SubClassOf: Feedback-Law
     - PID_Controller:
@@ -218,20 +232,20 @@
     - Linear_State_Feedback:
         SubClassOf: Linear_Feedback_Law
     - Plant:
-        SubClassOf: Dynamical_System
+        SubClassOf: Control-Theoretic_Role
 
-    - Observer_Type:
-        SubClassOf: OCSE_Entity
+    - Observer:
+        SubClassOf: Control-Theoretic_Role
     - Full_State_Observer:
-        SubClassOf: Observer_Type
+        SubClassOf: Observer
     - Reduced_State_Observer:
-        SubClassOf: Observer_Type
+        SubClassOf: Observer
     - Luenberger_Observer:
-        SubClassOf: Observer_Type
+        SubClassOf: Observer
     - Kalman_Filter:
-        SubClassOf: Observer_Type
+        SubClassOf: Observer
     - Extended_Kalman_Filter:
-        SubClassOf: Observer_Type
+        SubClassOf: Observer
 
     - Feedback_Type:
         SubClassOf: OCSE_Entity
@@ -325,6 +339,10 @@
 #- zustand
 #- zustandsraum
 #- beobachter
+#- Normalformbeobachter
+#- High-Gain-Beobachter
+#- Kalman-Filter
+#- Erweitertes-Kalman-Filter
 #- regelgesetz
 #- folgeregler
 #- kostenfunktion
@@ -362,6 +380,7 @@
 #- quadratisch (Polynom)
 #- positiv definit
 #- konservativ
+#- Attraktiviätsgebiet
 #- passiv
 #- lokal
 #- global
@@ -382,3 +401,4 @@
 #- LMI
 #- Jordanstruktur
 #- Polplatzierung
+#- Partialbruchzerlegung
