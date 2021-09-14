@@ -338,6 +338,8 @@
 #- vektorraum
 #- zustand
 #- zustandsraum
+#- Zustandsgröße
+#- Systemgröße
 #- beobachter
 #- Normalformbeobachter
 #- High-Gain-Beobachter
@@ -354,7 +356,6 @@
 #- polynom
 #- ljapunov-funktion
 #- verstärkung
-#- störgröße
 #- mimo
 #- mechanischer freiheitsgrad
 #- entwurfsfreiheitsgrad
@@ -391,6 +392,7 @@
 #- eingangsableitung
 #- zeitableitung
 #- Lie-Ableigung
+#- Lie-Klammer
 #- Vektorfeld
 #- signal
 #- ableitungsordnung
@@ -402,3 +404,101 @@
 #- Jordanstruktur
 #- Polplatzierung
 #- Partialbruchzerlegung
+#- Wurzelortskurve
+#- Wurzelschwerpunkt
+#- Überschwingen
+#- Führungsgröße
+#- Regelgröße
+#- Regeldifferenz
+#- Störgröße
+#- Stellgröße
+#- Führungssprung
+#- Führungsübertragungsfunktion
+#- Führungssprungantwort
+#- Störsprungantwort
+#- Störübertragungsfunktion
+#- Sprungantwort
+#- Erreichbarkeit
+#- Detektierbarkeit
+#- Normalform (Regelungs-, Jordan, Beobachtbarkeits, Beobachter)
+#- Ortskurve
+#- Bode-Diagramm
+#- Knickfrequenz
+#- Grenzfrequenz
+#- Phasenreserve (-rand; margin@en)
+#- Betragsreserve
+#- Nyquist-Kriterium
+#- vereinfachtes Nyquist-Kriterium
+#- Amplitudengang
+#- Phasengang
+#- Durchtrittsfrequenz
+#- Nichols-Diagramm
+#- Kaskadenregelung
+#- unterlagerte Regelung
+#- Zeitdiskretität
+#- Zeitdiskertheit
+#- Ore-Polynom
+#- Phasenverschiebung
+#- Signalflussgraph
+#- Blockdiagramm
+#- algebraische Schleife
+#- involutiver Abschluss
+#- relativer Grad
+#- Distribution
+#- Ljapunov-Exponent
+#- Quantorenelimination
+#- Überschwingweite
+#- Einschwingzeit (Ausregelzeit)
+#- Anschwingzeit
+#- Anregelzeit # (bis Größe das erstmal (wieder) in das Toleranzband einläuft)
+#- Verzugszeit
+#- Ausgleichszeit
+#- Trajektoriengenerator
+#- Kovariante Ableitung
+#- Gewichtsfunktion
+#- Übergangsfunktion
+#- Korrespondenz
+#- Laplacetransformation
+#- Impulsantwort
+#- proper
+#- streng proper
+#- schwingungsfähig
+#- stationäre Regelabweichung
+#- stationäre Genauigkeit
+#- Ruhelage (Gleichgewichstslage)
+#- I-Verhalten
+#- P-Verhalten
+#- Kompensation
+#- Zeitkonstante
+#- Dämpfungsfaktor
+#- PT1, PT2, PT3, DT1, I, IT1, IT2, Allpass
+#- <verschiedene mathematische Repräsentationen eines PID-Reglers (Zeitkonstante-Darstellung, Verstärkungsform)>
+#- Windup-Effekt
+#- PID-Einstellverfahren:
+#   - Empirisch
+#   - Ziegler-Nichols (experimentell)
+#   - Ziegler-Nichols (modellbasiert)
+#   - Chien, Hrones, Reswick
+#   - Reinisch
+#   - Integralkriterien (numerisch, in Spezialfällen analytisch)
+#   - Betragsoptimum (analytisch, modellbasiert)
+#   - symmetrisches Optimum (modellbasiert, analytisch)
+#- aperiodischer Grenzfall
+#- Zeitbereich
+#- Frequenzbereich
+#- Port-Hammilton-System
+#- Funnel-based-Control
+#- H-unendlich
+#- RH-unendlich
+#- teilerfremde Zerlegung
+#- Vorhaltezeit,
+#- Integrationszeitkonstante, Nachstellzeit
+#- Harmonische Balance
+
+
+
+
+
+
+
+
