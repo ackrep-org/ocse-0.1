@@ -16,10 +16,16 @@
         __create_proxy_individual: recursive  # see docs (or source) of yamlpyowl
     - Mathematical_Object:
         SubClassOf: "owl:Thing"
+        __create_proxy_individual: recursive
     # ackrep related entities (will probably be moved to a separate ontology in the future)
     - ACKREP_Entity:
         SubClassOf: "owl:Thing"
         annotations: Base class for all ACKREP-entities
+        __create_proxy_individual: recursive
+
+    - General_Dynamical_Mapping:
+        SubClassOf: Mathematical_Object
+        annotations: Mapping that might allow derivatives, intergrals or delays of the arguments, additional to static mapping
 
     - Mathematical_Function:
         SubClassOf: Mathematical_Object
@@ -56,12 +62,20 @@
     # ackrep related entities (will probably be moved to a separate ontology in the future)
     - ACKREP_ProblemSpecification:
         SubClassOf: ACKREP_Entity
+        labels:
+            - ACKREP_Problem-Specification __disp
     - ACKREP_ProblemSolution:
         SubClassOf: ACKREP_Entity
+        labels:
+            - ACKREP_Problem-Solution __disp
     - ACKREP_MethodPackage:
         SubClassOf: ACKREP_Entity
+        labels:
+            - ACKREP_Method-Package __disp
     - ACKREP_EnvironmentSpecification:
         SubClassOf: ACKREP_Entity
+        labels:
+            - ACKREP_Environment-Specification __disp
     - ACKREP_Documentation:
         SubClassOf: ACKREP_Entity
     - ACKREP_Comment:
@@ -86,10 +100,18 @@
         annotations: >
             The type (in the sense of template) of a system (real or abstract) of which multiple instances can exist (like spring-mass-damper) system.
             "Ontotypical" means: Being-related (from greek "onto") type (from greek "typos"). This concept serves to distinguish between the model of a system, the generic (i.e. ontotypical) system (to wich the model refers) and concrete physical or cyberphysical realizations of the system. Note: one ontotypical dynamical system can have different models, e.g. a rigid body ode model and a pde model accounting for elasticity. These models are in general not equivalent, i.e. there is no one-to-one mapping between their trajectories.
-    - Control-Theoretic_Role:
+    - Control-Theoretic_Structure:
         SubClassOf: OCSE_Entity
         annotations: >
-            The role which a (sub) system plays in a control-theoretic setting. E.g. Controller, Plant, Filter, Observer
+            General structure of a control engineering system (might consist of substructures).
+
+    - Control-Theoretic_Facility:
+        SubClassOf: Control-Theoretic_Structure
+        annotations: >
+            Artificial or purposeful (sub-) structure of a control engineering system.
+        labels:
+            - Regelungseinrichtung __@de
+
     - Control-Theoretic_Signal:
         SubClassOf: OCSE_Entity
     - Control-Theoretic_Task:
@@ -98,6 +120,9 @@
     - Dynamic_System_Property:
         SubClassOf: OCSE_Entity
         annotations: General Property
+    - Evolving_Set:
+        SubClassOf: OCSE_Entity
+        annotations: Set (manifold) on which a dynamical System evolves
 
     # Task Types
     - Trajectory_Generation:
@@ -110,8 +135,8 @@
         annotations: construct a generalizable model of a dynamical system from (measurement/simulation) data
     - Quantity_Estimation:
         SubClassOf: Control-Theoretic_Task
-        annotations: usually done by an observer or a Kalman Filter
-    - Property_Analysis:
+        annotations: usually done by an observer or a Kalman filter
+    - System_Analysis:
         SubClassOf: Control-Theoretic_Task
         annotations: determine whether a system admits a special property (controllability, flatness...)
     - System_Modelling:
@@ -216,11 +241,25 @@
     - Undershooting:
         SubClassOf: Convergence_To_Equilibrium
 
+    # State_space and trajectories
+    - State_Space:
+        SubClassOf: Evolving_Set
+    - Trajectory:
+        SubClassOf: OCSE_Entity
+
     # Controllers
     - Controller:
-        SubClassOf: Cont
+        SubClassOf: Control-Theoretic_Facility
+    - Feedback_Law:
+        SubClassOf: Control-Theoretic_Facility
+    - Endogenous_Feedback:
+        SubClassOf: Feedback_Law
+    - Quasi_Static_Feedback:
+        SubClassOf: Endogenous_Feedback
+    - Static_Feedback_Law:
+        SubClassOf: Quasi_Static_Feedback
     - Linear_Feedback_Law:
-        SubClassOf: Feedback-Law
+        SubClassOf: Feedback_Law
     - PID_Controller:
         SubClassOf: Linear_Feedback_Law
     - PD_Controller:
@@ -231,11 +270,22 @@
         SubClassOf: Linear_Feedback_Law
     - Linear_State_Feedback:
         SubClassOf: Linear_Feedback_Law
+
+
+    # System_Analysis
+    - Controllability_Analysis:
+        SubClassOf: System_Analysis
+    - Observability_Analysis:
+        SubClassOf: System_Analysis
+    - Flatness_Analysis:
+        SubClassOf: System_Analysis
+    - Stability_Analysis:
+        SubClassOf: System_Analysis
     - Plant:
-        SubClassOf: Control-Theoretic_Role
+        SubClassOf: Control-Theoretic_Structure
 
     - Observer:
-        SubClassOf: Control-Theoretic_Role
+        SubClassOf: Control-Theoretic_Facility
     - Full_State_Observer:
         SubClassOf: Observer
     - Reduced_State_Observer:
@@ -278,6 +328,15 @@
 
         Range:
             - OCSE_Entity
+            - Mathematical_Object
+
+- owl_object_property:
+    related_to:
+        Domain:
+            - OCSE_Entity
+
+        Range:
+            - OCSE_Entity
 
 # ACKREP specific properties
 
@@ -296,9 +355,32 @@
         Characteristics:
             - Functional
 
-# Note: behind the scenes some "Generic individuals" will be created (workarround due to the lack of metaclass support in owlready)
+- owl_data_property:
+    is_subset_of:
+        Domain:
+            - OCSE_Entity
+            - Mathematical_Object
+        Range:
+            - OCSE_Entity
+            - Mathematical_Object
+        Characteristics:
+            - Transitive
+
+
+# Note: behind the scenes some "Generic individuals" (also called proxy-individuals) will be created (workarround due to the lack of metaclass support in owlready)
 # See ackrep_core.core for more info (search for generic individuals).
 
+# Representation facts for generic individuals
+- property_facts:
+    represented_by:
+        Facts:
+            - iRational_Transfer_Function:
+                - iRational_Function
+
+    related_to:
+        Facts:
+            - iObserver:
+                - iQuantity_Estimation
 
 # Note: Tags should be as specific as possible, e.g. if applicable `Linear_State_Space_System` is prefererred over `State_Space_System`. However, as every Linear_State_Space_System also is a State_Space_System, a search for the latter (more general tag) should also contain entities which are tagged with the former (more special tag). The following rule associates tags of parent classes to entities which already have a tag of the child class.
 
@@ -494,7 +576,7 @@
 #- Vorhaltezeit,
 #- Integrationszeitkonstante, Nachstellzeit
 #- Harmonische Balance
-
+#- offene/geschlossene Wirkungskette
 
 
 

@@ -10,8 +10,14 @@
 #
 #
 
+from collections import defaultdict
+
+
 from semantictools import core as smt
 from yamlpyowl import core as ypo
+
+from ipydex import IPS, activate_ips_on_exception
+activate_ips_on_exception()
 
 # for graphviz visualization of networkx graphs
 import nxv
@@ -27,10 +33,38 @@ om = ypo.OntologyManager(fpath)
 n = om.name_mapping_container
 
 
+
 q = list(ypo.owl2.Thing.subclasses())
-G = smt.generate_taxonomy_graph_from_onto(ypo.owl2.Thing)
+
+gv = smt.GraphVisualizer(show_labels_for_concepts=False)
+G = gv.generate_taxonomy_graph_from_onto(ypo.owl2.Thing)
 
 G.number_of_nodes() ##:
+
+
+
+
+basic_edge_style = {"style": "solid", "arrowType": "normal", "label": "is a", "color": "#000000"}
+custom_edge_styles = {}
+
+def edge_style_func(u, v, d):
+
+    edge_key = (u, v)
+
+    return custom_edge_styles.get(edge_key, basic_edge_style)
+
+
+def get_class_and_node(indiv: ypo.Thing):
+    """
+    return the concept-object (theclass) of indiv and the associated node in the taxonomy graph
+    """
+
+    assert isinstance(indiv, ypo.Thing), f"Unexpected: {indiv} is not an individual!"
+    theclass = indiv.is_a[0]
+    node = gv.concept_node_mapping[theclass]
+
+    return theclass, node
+
 
 style = nxv.Style(
     graph={"rankdir": "BT"},
@@ -39,9 +73,51 @@ style = nxv.Style(
         "fixedsize": True,
         "width": 1,
         "fontsize": 10,
+        # "fontname": "Monospace",
     },
-    edge=lambda u, v, d: {"style": "solid", "arrowType": "normal", "label": "is a"},
+    edge=edge_style_func,
 )
+
+
+
+
+# add more relations
+
+relation_mapping = {
+
+    "represented_by": {"label": "repr. by", "color": "#5050C0", "constraint": False,
+                       "fontcolor": "#5050C0", "labeldistance": 2.0, "penwidth": 2.0},
+    "related_to": {"label_": "rel. to", "color": "#50C0C0", "constraint": False},
+    "has_property": {"label": "rel. to", "color": "#C05050", "constraint": False},
+
+    }
+
+
+for rel_name, edge_style_dict in relation_mapping.items():
+
+    try:
+        rel_object = getattr(n, rel_name)
+    except AttributeError:
+        print(f"unknown relation: {rel_name}")
+        continue
+
+
+    # iterate over relation pairs
+    for ind1, ind2 in rel_object.get_relations():
+        # get the corresponding classes and nodes
+        class1, node1 = get_class_and_node(ind1)
+        class2, node2 = get_class_and_node(ind2)
+
+        G.add_edge(node1, node2)
+
+        custom_edge_styles[(node1, node2)] = edge_style_dict
+
+        #IPS()
+
+
+
+#IPS()
+
 
 
 # svg_data = nxv.render(G, style)
