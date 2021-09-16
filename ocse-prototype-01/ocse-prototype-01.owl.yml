@@ -52,6 +52,12 @@
         SubClassOf: Singularity
         annotations: Ordinary pole like in 1/(s + 5)
 
+    - Matrix:
+        SubClassOf: Mathematical_Object
+
+    - Set:
+        SubClassOf: Mathematical_Object
+
     - Mapping_Property:
         SubClassOf: Mathematical_Object
     - Affinity:
@@ -81,10 +87,10 @@
     - ACKREP_Comment:
         SubClassOf: ACKREP_Entity
 
-    - Mathematical_Model:
+    - Control-Theoretic_Artefact:
         SubClassOf: OCSE_Entity
         annotations: >
-            A mathematical model of an ontotypical dynamical system. Some authors call this a "system" in a behavioral sense. Note: one model can have different representations, e.g. by applying an invertible change of coordinates.
+            Base class for mathematical objects that have a control-theoretic meaning.
     - Mathematical_Model_Representation:
         SubClassOf: OCSE_Entity
         annotations: >
@@ -123,6 +129,39 @@
     - Evolving_Set:
         SubClassOf: OCSE_Entity
         annotations: Set (manifold) on which a dynamical System evolves
+
+    # Artefacts
+    - Mathematical_Model:
+        SubClassOf: Control-Theoretic_Artefact
+        annotations: >
+            A mathematical model of an ontotypical dynamical system. Some authors call this a "system" in a behavioral sense. Note: one model can have different representations, e.g. by applying an invertible change of coordinates.
+    - Lyapunov-Function:
+        SubClassOf: Control-Theoretic_Artefact
+    - Controller_Canoncial_Form:
+        SubClassOf: Control-Theoretic_Artefact
+    - Hautus_Controllability_Matrix:
+        SubClassOf: Control-Theoretic_Artefact
+    - Hautus_Observability_Matrix:
+        SubClassOf: Control-Theoretic_Artefact
+    - Kalman_Controllability_Matrix:
+        SubClassOf: Control-Theoretic_Artefact
+    - Kalman_Observability_Matrix:
+        SubClassOf: Control-Theoretic_Artefact
+    - Kalman_Decomposition:
+        SubClassOf: Control-Theoretic_Artefact
+
+    # Matrices
+    - Jordan_Normal_Form:
+        SubClassOf: Matrix
+    - Frobenius_Companion_Matrix:
+        SubClassOf: Matrix
+
+    # Sets
+    - Manifold:
+        SubClassOf: Set
+    - Vector_Space:
+        SubClassOf: Manifold
+
 
     # Task Types
     - Trajectory_Generation:
@@ -164,6 +203,8 @@
     - Time_Continuity:
         SubClassOf: Dynamic_System_Property
     - Attractivity:
+        SubClassOf: Dynamic_System_Property
+    - Differential_Flatness:
         SubClassOf: Dynamic_System_Property
     - Stability:
         SubClassOf: Dynamic_System_Property
@@ -308,14 +349,14 @@
     - Dynamic_Feedback:
         SubClassOf: Feedback_Type
 
-    - Controller_Design_Methods:
+    - Feedback_Design_Method:
         SubClassOf: OCSE_Entity
     - Linear_Quadratic_Control:
-        SubClassOf: Controller_Design_Methods
+        SubClassOf: Feedback_Design_Method
     - Pole_Placement:
-        SubClassOf: Controller_Design_Methods
+        SubClassOf: Feedback_Design_Method
     - Coprime_Decomposition:
-        SubClassOf: Controller_Design_Methods
+        SubClassOf: Feedback_Design_Method
 
 
 
@@ -338,6 +379,15 @@
         Range:
             - OCSE_Entity
 
+- owl_object_property:
+    has_property:
+        Domain:
+            - OCSE_Entity
+
+        Range:
+            - Dynamic_System_Property
+            - Mapping_Property
+
 # ACKREP specific properties
 
 - owl_object_property:
@@ -347,6 +397,7 @@
         Range:
             - OCSE_Entity
 
+# Note: Tags should be as specific as possible, e.g. if applicable `Linear_State_Space_System` is prefererred over `State_Space_System`. However, as every Linear_State_Space_System also is a State_Space_System, a search for the latter (more general tag) should also contain entities which are tagged with the former (more special tag). The following rule associates tags of parent classes to entities which already have a tag of the child class.
 
 - owl_data_property:
     has_entity_key:
@@ -376,13 +427,36 @@
         Facts:
             - iRational_Transfer_Function:
                 - iRational_Function
+            - iMathematical_Model:
+                - iMathematical_Model_Representation
+            - iState_Space:
+                - iVector_Space
+            - Evolving_Set:
+                - iManifold
 
     related_to:
         Facts:
             - iObserver:
                 - iQuantity_Estimation
 
-# Note: Tags should be as specific as possible, e.g. if applicable `Linear_State_Space_System` is prefererred over `State_Space_System`. However, as every Linear_State_Space_System also is a State_Space_System, a search for the latter (more general tag) should also contain entities which are tagged with the former (more special tag). The following rule associates tags of parent classes to entities which already have a tag of the child class.
+    has_property:
+        Facts:
+            - iLinear_Feedback_Law:
+                - iLinearity
+            - iTransfer_Function:
+                - iLinearity
+            - iLinear_State_Space_System:
+                - iLinearity
+
+
+
+- swrl_rule:
+    name: linear_controllability_flattness1
+    label: "Every linear system that is controllable is also differentially flat."
+    src: "Mathematical_Model(?mm), represented_by(?mm, ?rep), Mathematical_Model_Representation(?rep),
+            has_property(?rep, iLinearity), has_property(?mm, Controllability)-> has_property(?mm, iDifferential_Flatness)"
+
+    # Does this hold for time discrete systems as well?
 
 
 
@@ -451,7 +525,6 @@
 #- polstelle
 #- nullstelle
 #- linearisierung
-#- matrix
 #- relativer grad
 
 #---
