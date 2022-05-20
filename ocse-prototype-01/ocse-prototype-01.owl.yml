@@ -7,6 +7,17 @@
 
 - iri: "https://ackrep.org/draft/ocse-prototype01#"
 
+- import:
+    iri: "http://ontomathpro.org/omp2#"
+    annotations:
+        download_link: "https://raw.githubusercontent.com/CLLKazan/OntoMathPro/v.2/OntoMathPro_v2.owl"
+        comment: >
+            Selfdescription: "The ontology (OntoMathPro) describes mathematical entities as well as mathematical theories, and relations between them."
+            We use an adapted version of the omp2 here because the currently (2022-05-20) available version is not yet completely translated to English. The used adapted version contains semi-automatically translated labels.
+    # the localpath is relative to the directory of this file
+    localpath: ../support-material/ontomathpro/OntoMathPro_v2_ck.owl
+    ns: omp2
+
 - annotation: >
     This ontology was created in context of the ACKREP project, see (https://ackrep.org). To the best knowledge of the authors it is the first atempt, to formalize control theoretic concepts by means of an owl ontology. Its current incomplete state has three causes: 1. Limited resources. 2. Limited expressiveness of OWL and SWRL. 3. Principal infeasibility of a *complete* representation of any nontrivial domain-knowledge.
 
@@ -61,6 +72,7 @@
 
     - Matrix:
         SubClassOf: Mathematical_Object
+        EquivalentTo: omp2:E1703
 
     - Set:
         SubClassOf: Mathematical_Object
