@@ -45,6 +45,13 @@
         SubClassOf:
             - Polynomial
             # - SISO_Mathematical_Function # this should be inferred by the reasoner
+    - Hurwitz_Polynomial:
+        SubClassOf:
+            - Monovariate_Polynomial
+    - Non_Hurwitz_Polynomial:
+        SubClassOf:
+            - Monovariate_Polynomial
+
 
     - Singularity:
         SubClassOf: Mathematical_Object
@@ -287,6 +294,10 @@
         SubClassOf: Evolving_Set
     - Trajectory:
         SubClassOf: OCSE_Entity
+    - Periodic_Orbit:
+        SubClassOf: Trajectory
+    - Equilibrium_Point:
+        SubClassOf: Trajectory
 
     # Controllers
     - Controller:
@@ -336,6 +347,8 @@
     - Kalman_Filter:
         SubClassOf: Observer
     - Extended_Kalman_Filter:
+        SubClassOf: Observer
+    - Unscented_Kalman_Filter:
         SubClassOf: Observer
 
     - Feedback_Type:
@@ -407,6 +420,18 @@
             - Functional
 
 - owl_data_property:
+    has_coefficient:
+        Domain: Monovariate_Polynomial
+        Range: float
+
+- owl_data_property:
+    has_degree:
+        Domain: Monovariate_Polynomial
+        Range: int
+        Characteristics:
+            - Functional
+
+- owl_data_property:
     is_subset_of:
         Domain:
             - OCSE_Entity
@@ -455,8 +480,17 @@
     label: "Every linear system that is controllable is also differentially flat."
     src: "Mathematical_Model(?mm), represented_by(?mm, ?rep), Mathematical_Model_Representation(?rep),
             has_property(?rep, iLinearity), has_property(?mm, Controllability)-> has_property(?mm, iDifferential_Flatness)"
-
     # Does this hold for time discrete systems as well?
+
+- swrl_rule:
+    # yet untested
+    name: stodola_condition1
+    # label: "if a model is BIBO-stable, i.e. if its transfer function representation, only has poles with negative real part, then all coefficients of the denominator polynomial must have the same sign."
+    label: "if in a polynomial with real coefficients not all coefficients have the same sign this polynomial is not 'Hurwitz'"
+    # formal representation of this has the benefit to make explicit, what "sign" means for vanishing coefficients
+    src: "Monovariate_Polynomial(?p), has_coefficient(?p, ?c1), has_coefficient(?p, ?c2), notEqual(?c1, ?c2), lessThanOrEqual(?c1, 0), greaterThanOrEqual(?c2, 0) -> Non_Hurwitz_Polynomial(?p)"
+
+
 
 
 
@@ -650,6 +684,17 @@
 #- Integrationszeitkonstante, Nachstellzeit
 #- Harmonische Balance
 #- offene/geschlossene Wirkungskette
+#- Stodola Condition
+#- Brunovsky Canonical Form
+#- Dual Brunovsky Canonical Form
+#- Backstepping
+#- Savitzky Golay Filter
+
+
+# ggf. relevante Ontologie
+# mathematical model (differential equations model mit einigen untertypen)
+# https://www.ebi.ac.uk/ols/ontologies/mamo/terms?iri=http%3A%2F%2Fidentifiers.org%2Fmamo%2FMAMO_0000003&viewMode=All&siblings=false
+
 
 
 
