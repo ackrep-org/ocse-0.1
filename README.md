@@ -1,5 +1,5 @@
 <br><br>
-**Important notice:** This repo holds an old and meanwhile deprecated version of the Ontology of Control Systems Engineering (OCSE). Currently, (2022-09-27) a new version (*OCSE 0.2*) is developed as part of the ACKREP project: <https://github.com/ackrep-org/erk-data-control-theory>.
+**Important notice:** This repo holds the old and meanwhile deprecated OWL-based version 0.1 of the Ontology of Control Systems Engineering (OCSE). Currently, (>2022-10-01) a new version (*OCSE 0.2*) is developed as part of the ACKREP project: <https://github.com/ackrep-org/ocse>. Below follows the original content of the README-file.
 
 
 
