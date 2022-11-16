@@ -547,22 +547,28 @@
 #- High-Gain-Beobachter
 #- Kalman-Filter
 #- Erweitertes-Kalman-Filter
+#- Rosenbrock-Matrix
+#- Hautus-Kriterium
+#- Minor (Unterdeterminante)
+#- Hauptminior
 #- regelgesetz
 #- folgeregler
-#- kostenfunktion
-#- gütemaß
+#- Kostenfunktion
+#- Gütemaß
 #- parameter
 #- unbestimmtheit
 #- robustheit
 #- koeffizient
 #- polynom
-#- ljapunov-funktion
+#- ljapunov-funktion [x]
 #- verstärkung
 #- mimo
 #- mechanischer freiheitsgrad
-#- entwurfsfreiheitsgrad
-#- arbeitspunkt
-#- (lokales) optimum
+#- Entwurfsfreiheitsgrad
+#- Arbeitspunkt
+#- (lokales) Optimum
+#- (lokales) Maximum
+#- (lokales) Minimum
 
 #---
 
@@ -594,6 +600,7 @@
 #- zeitableitung
 #- Lie-Ableigung
 #- Lie-Klammer
+#- Lie-Reihe
 #- Vektorfeld
 #- signal
 #- ableitungsordnung
@@ -637,16 +644,21 @@
 #- Kaskadenregelung
 #- unterlagerte Regelung
 #- Zeitdiskretität
-#- Zeitdiskertheit
+#- Zeitdiskretheit
+#- Dead-Beat-Regler
+#- Polynomdivision
 #- Ore-Polynom
 #- Phasenverschiebung
 #- Signalflussgraph
 #- Blockdiagramm
 #- algebraische Schleife
+#- Involutivität
 #- involutiver Abschluss
-#- relativer Grad
+#- relativer Grad (schon oben notiert); Zusammenhang zu Flachheit
 #- Distribution
+#- involutive Distribution
 #- Ljapunov-Exponent
+#- Ljapunov-Gleichung
 #- Quantorenelimination
 #- Überschwingweite
 #- Einschwingzeit (Ausregelzeit)
@@ -659,10 +671,16 @@
 #- Gewichtsfunktion
 #- Übergangsfunktion
 #- Korrespondenz
+#- Korrespondenz-Tabelle
 #- Laplacetransformation
+#- inverse Laplacetransformation
+#- inverse Z-Transformation
+#- Residuensatz
 #- Impulsantwort
+#- Umkehrabbildung
 #- proper
 #- streng proper
+#- biproper (Zählergrad=Nennergrad)
 #- schwingungsfähig
 #- stationäre Regelabweichung
 #- stationäre Genauigkeit
@@ -684,10 +702,11 @@
 #   - Integralkriterien (numerisch, in Spezialfällen analytisch)
 #   - Betragsoptimum (analytisch, modellbasiert)
 #   - symmetrisches Optimum (modellbasiert, analytisch)
+#   - Pol-Nullstellen-Kompensation (Pole-Cancelation)
 #- aperiodischer Grenzfall
 #- Zeitbereich
 #- Frequenzbereich
-#- Port-Hammilton-System
+#- Port-Hamilton-System
 #- Funnel-based-Control
 #- H-unendlich
 #- RH-unendlich
@@ -697,10 +716,176 @@
 #- Harmonische Balance
 #- offene/geschlossene Wirkungskette
 #- Stodola Condition
+#- Brunovsky State
 #- Brunovsky Canonical Form
 #- Dual Brunovsky Canonical Form
 #- Backstepping
+#- PDE-Backstepping
+#- Backstepping-Transformation
 #- Savitzky Golay Filter
+#- Nodge Filter
+#- Butterworth Filter
+#- Elliptische Filter
+#- https://en.wikipedia.org/wiki/Gevrey_class
+#- Lie-Bäcklund equivalence
+#- Lie-Bäcklund isomorphism
+#- In reflexiven Räumen ist die Einheitskugel schwachkompakt
+#- De Rham cohomology
+#- exact sequences
+#- internal model control (IMC)
+#- Parallelkompensator
+#- Cayley-Hamilton Theorem
+#- derived flag
+#- Eingangsaffin -> Eigenschaft der Modellrepräsentation
+#- Schur-Stabil
+#- Grenzstabil
+#- optimale Sensorplatzierung
+#- Kreisteilungspolynom
+#- Feldorientierte Regelung
+#- Gramsche Steuerbarkeitsmatrix
+#- Gramsche Beobachtbarkeitsmatrix
+#- Bezout-Identität
+#- Spur einer Matrix
+#- Diophantische Gleichung (zsh. mit nichtlineare Otimierung)
+#- Nulldynamik
+#- Modellordnungsreduktion
+#- Balanced Truncation
+#- POD
+#- Krylov-Unterraum-Methode
+#- Integro(partielle) DGL
+#- Fredholm Integralgleichung
+#- Halbgruppe
+#- Gateaux-Ableitung
+#- Fundamentallemma der Variationsrechnung
+#- Implizite Mittelpunktsregel (erhält port-Hamilton-Struktur)
+#- Denavit-Hardenberg-Parameter
+#- Stückweise affine Funktion (PWA) (ReLU, Maxout)
+#- ökonomische MPC
+#- Mayer-Term (Endkosten im MPC Kostenfunktional)
+#- Zulässige Menge (Admissible set)
+#- Moving Horizon Estimator (MHE)
+#- Karush-Kuhn-Tucker Bedingung (KKT)
+#- modifizierte Karush-Kuhn-Tucker Bedingung (KKT)
+#- Komplementaritätsbedingung
+#- Einfach-Schießverfahren
+#- Mehrfach-Schießverfahren
+#- Kollokation
+#- Primal-Dual-Interior-Point-Method (Optimierungsverfahren)
+#- Paretofront (unendliche Menge optimaler Kompromisse)
+#- Prädiktionshorizont
+#- schwach paretooptimal
+#- quasikontinuierlich
+#- vorwärtsflach (im Zsh. mit Flachheit und Zeitdiskretität)
+#- vorwärts-shift
+#- rückwärts-shift
+#- Stellgrößentransformation (eingangstransformation)
+#- Hyperbolische Regelungsnormalform
+#- Integratorkette
+#- flachheitsbasierte Parametrierung
+#- Lie-Reihe
+#- Ideal
+#- endlich erzeugt
+#- verteilte Totzeit
+#- verteilte Prädiktion
+#- Fehlerinjektion
+#- lokal schwache Erreichbarkeit
+#- Eingangsbeschränkungen
+#- Zustandsbeschränkungen
+#- Ausgangsbeschränkungen (sinnvoll)
+#- verallgemeinerte Zustandsdarstellung
+#- Volterra-Integralgleichung
+#- Riemann-Characteristiken
+#- Hilbertscher Basissatz
+#- Ortsdimension (1D, 2D, ...)
+#- Dirichlet-Randbedingung
+#- Robin-Randbedingung
+#- XYZ-Randbedingung
+#- Wohlgestelltheit
+#- Glattheit
+#- forward complete
+#- Fluchtzeit
+#- Entweichzeit (offenbar nicht das gleiche)
+#- unimodular
+#- unimodulare Ergänzug/Vervollständigung
+#- hyperregulär
+#- Eindeutigkeit der Lösung
+#- Stetigkeit (Begriffsgruppe)
+#- Lipschitz-Stetigkeit
+#- holonome Randbediungung
+#- nicht-holonome Randbediungung
+#- Driftfrei
+#- Driftvektorfeld
+#- kinematisches Modelll
+#- Deskriptor-System (potenziell = DAE-System)
+#- differentieller Index (DAE)
+#- Matrizenbruchdarstellung
+#- Matrix-Polynom
+#- Kronecker-Normalform
+#- proper symplectic decomposition
+#- verallgemeinertes (generalisiertes) Eigenwertproblem
+#- Charakteristisches Polynom eines Übertragungssystems
+#- Charakteristisches Polynom einer Matrix
+#- Charakteristisches Polynom des geschlossenen Kreises
+#- analytische Testfunktion (2D "Rastrigin", = Optimierungs-Benchmark)
+#- Statistische Inferenz
+#- Möglichkeitstheorie (Alternative zu Kolmogorov-Theorie)
+#- Hauptachsentransformation
+#- Radial Basis Function
+#- Rang (einer Matrix)
+#- Struktur-Rang (einer Matrix, = obere Schranke für den Rang)
+#- local diffeomorphism
+#- Frobenius theorem
+#- generalized State
+#- generalized state transformation
+#- Kronecker Symbol, Kronecker delta (for >2 dimensions?) tensor?
+#- singular perturbation theory
+#- differential algebra (filtrations; Delaleau and Rudolph 1998)
+#- algebraic Riccati equation
+#- quadratic form,  bilinear form
+#- Sontag-Formel
+#- Control Lyapunov function
+#- exact feedforward linearization
+#- Multiindex
+#- Routh-Kriterium
+#- Hurwitz-Kriterium
+#- BIBO-Stability
+#- Anfangswert
+#- Randwert
+#- äußere Ableitung
+#- exterior differential system
+#- Keilprodukt
+#- differential form
+#- Pfaffian form
+#- suppremum
+#- infimum
+#- Cartesian Space
+#- Euklidian Space
+#- Funktion der Klasse k (im Zusammenhang mit Passivität)
+#- Prädiktionsfehlerminimierung
+#- Hammersteinmodell
+#- Wiener modell
+#- modelica, buildings bibliothek,
+#- functional mockup interface
+#- Madamar Matrizendivision (elementweise)
+#- Fraktionale Systeme (see 2013_Rivero_Rogosin_Machado_Trujillo__Stability of Fractional Order Systems)
+
+
+
+
+#- ## Domänenbegriffe:
+#- Zwischenkreisspannung
+#- Kraftschlüssiges Greifen (Robotik-Anwendungen)
+#- Manipulationsprimitiv
+#- Vorschubgeschwindigkeit
+#- Fluid-Struktur-Interaktion
+#- potential shaping (mechanics)
+#-
+
+
+
+#- Akademisches Beispiel
+#- Akademisches Beispiel
+
 
 
 # ggf. relevante Ontologie
